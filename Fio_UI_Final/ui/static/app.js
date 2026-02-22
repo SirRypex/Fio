@@ -121,12 +121,26 @@ async function sendMessage(){
 
 function renderAll(){renderTabs();renderProjects();renderHeader();renderMessages();}
 
-document.querySelectorAll(".tab").forEach(b=>{
-  b.onclick=()=>{state.workspace=b.dataset.ws;state.activeProject=null;save();renderAll();};
-});
+window.onload = () => {
 
-$("newProject").onclick=createProject;
-$("send").onclick=sendMessage;
-$("input").addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();sendMessage();}});
+  document.querySelectorAll(".tab").forEach(b=>{
+    b.onclick=()=>{
+      state.workspace=b.dataset.ws;
+      state.activeProject=null;
+      save();
+      renderAll();
+    };
+  });
 
-renderAll();
+  document.getElementById("newProject").onclick=createProject;
+  document.getElementById("send").onclick=sendMessage;
+
+  document.getElementById("input").addEventListener("keydown",e=>{
+    if(e.key==="Enter"&&!e.shiftKey){
+      e.preventDefault();
+      sendMessage();
+    }
+  });
+
+  renderAll();
+};
