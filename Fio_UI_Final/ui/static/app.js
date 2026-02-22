@@ -63,7 +63,7 @@ function createProject(){
 }
 
 async function sendMessage(){
-  const input = $("input");
+  const input = document.getElementById("input");
   const text = input.value.trim();
   if(!text) return;
 
