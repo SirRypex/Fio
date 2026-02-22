@@ -63,18 +63,58 @@ function createProject(){
 }
 
 async function sendMessage(){
-  const text=$("input").value.trim();
-  if(!text)return;
-  const p=getProject();
-  if(!p)return alert("Kein Projekt");
-  $("input").value="";
+  const input = $("input");
+  const text = input.value.trim();
+  if(!text) return;
+
+  const p = getProject();
+  if(!p) return alert("Kein Projekt");
+
+  input.value = "";
+
+  // UI sperren
+  input.disabled = true;
+  $("send").disabled = true;
+
+  // User Nachricht
   p.messages.push({role:"user",content:text});
   renderMessages();
-  const res=await fetch("/chat",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({prompt:text})});
-  const data=await res.json();
-  const reply=data.reply||data.content||data.choices?.[0]?.message?.content||"";
-  p.messages.push({role:"assistant",content:reply});
-  save();renderMessages();
+
+  // Thinking Placeholder
+  const thinkingMsg = {role:"assistant",content:"Fio denkt ..."};
+  p.messages.push(thinkingMsg);
+  renderMessages();
+
+  try{
+    const controller = new AbortController();
+    const timeout = setTimeout(()=>controller.abort(),60000);
+
+    const res = await fetch("/chat",{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({message:text}),
+      signal:controller.signal
+    });
+
+    clearTimeout(timeout);
+
+    if(!res.ok) throw new Error("Server Fehler");
+
+    const data = await res.json();
+    const reply = data.reply || "Keine Antwort";
+
+    thinkingMsg.content = reply;
+  }
+  catch(err){
+    thinkingMsg.content = "Fehler oder Timeout.";
+  }
+
+  save();
+  renderMessages();
+
+  input.disabled = false;
+  $("send").disabled = false;
+  input.focus();
 }
 
 function renderAll(){renderTabs();renderProjects();renderHeader();renderMessages();}
