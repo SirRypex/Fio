@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Fio</title>
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+
+<div class="app">
+
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-title">Fio</div>
+      <div class="brand-sub">AI Workspace</div>
+    </div>
+
+    <div class="tabs">
+      <button class="tab" data-ws="private">Privat</button>
+      <button class="tab" data-ws="work">Arbeit</button>
+      <button class="tab" data-ws="study">Studium</button>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-header">
+        <span>Projekte</span>
+        <button id="newProject">+</button>
+      </div>
+      <div id="projectList" class="project-list"></div>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="chat-header">
+      <div>
+        <div id="activeProject" class="project-name">Kein Projekt</div>
+        <div id="activeWorkspace" class="workspace-name"></div>
+      </div>
+    </div>
+
+    <div id="messages" class="messages"></div>
+
+    <div class="composer">
+      <textarea id="input" placeholder="Nachricht eingeben..."></textarea>
+      <button id="send">Senden</button>
+    </div>
+  </main>
+
+</div>
+
+<script type="module" src="/static/app.js"></script>
+</body>
+</html>
