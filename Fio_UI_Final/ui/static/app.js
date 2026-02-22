@@ -92,7 +92,9 @@ async function sendMessage(){
     const res = await fetch("/chat",{
       method:"POST",
       headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({message:text}),
+      body: JSON.stringify({
+        message: text
+      }),
       signal:controller.signal
     });
 
